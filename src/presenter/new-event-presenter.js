@@ -1,7 +1,6 @@
 import EditingForm from '../view/editing-form.js';
 import {remove, render, RenderPosition,replace} from '../framework/render.js';
 import { Mode,UpdateType,UserAction } from '../const.js';
-import {nanoid} from 'nanoid';
 
 export default class NewEventPresenter {
   #event = null;
@@ -54,6 +53,24 @@ export default class NewEventPresenter {
     }
   }
 
+  setSaving() {
+    this.#eventEditView.updateElement({
+      isDisabled: true,
+      isSaving: true,
+    });
+  }
+
+  setAborting() {
+    const resetFormState = () => {
+      this.#eventEditView.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#eventEditView.shake(resetFormState);
+  }
 
   #switchToEditMode() {
     this.#handleEditStart();
@@ -80,9 +97,9 @@ export default class NewEventPresenter {
     this.#onDataChange(UserAction.UPDATE_EVENT,UpdateType.MINOR,{...this.#event});
   }
 
-  #onFavoriteBtnClick = () => {
-    this.#onDataChange(UserAction.UPDATE_EVENT,UpdateType.PATCH,{...this.#event, isFavorite: !this.#event.isFavorite});
-  };
+  // #onFavoriteBtnClick = () => {
+  //   this.#onDataChange(UserAction.UPDATE_EVENT,UpdateType.PATCH,{...this.#event, isFavorite: !this.#event.isFavorite});
+  // };
 
   #onDelete = () => {
     this.#onDataChange(UserAction.DELETE_EVENT, UpdateType.MINOR, {...this.#event});

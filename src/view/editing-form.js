@@ -6,7 +6,7 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import he from 'he';
 
-const editEventFormTemplate = (event,destinations,offers) => {
+const editEventFormTemplate = (event,destinations,offers,isAddingNewEvent) => {
   const {type,dateFrom,dateTo,basePrice} = event;
   const currentDestination = destinations.find((destination) => destination.id === event.destination);
   const {name, description, pictures} = currentDestination;
@@ -62,8 +62,8 @@ ${KIND_OF_POINTS.map((pointType) => (`<div class="event__type-item">
   </div>
 
   <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-  <button class="event__reset-btn" type="reset">${event.id ? 'Delete' : 'Cancel'}</button>
-  ${event.id ? ` <button class="event__rollup-btn" type="button">
+  <button class="event__reset-btn" type="reset">${!isAddingNewEvent ? 'Delete' : 'Cancel'}</button>
+  ${!isAddingNewEvent ? ` <button class="event__rollup-btn" type="button">
   <span class="visually-hidden">Open event</span>
 </button>` : ''}
 </header>

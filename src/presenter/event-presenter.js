@@ -64,6 +64,40 @@ export default class EventPresenter {
     }
   }
 
+  setSaving() {
+    if (this.#mode === Mode.EDITING) {
+      this.#eventEditView.updateElement({
+        isDisabled: true,
+        isSaving: true,
+      });
+    }
+  }
+
+  setDeleting() {
+    if (this.#mode === Mode.EDITING) {
+      this.#eventEditView.updateElement({
+        isDisabled: true,
+        isDeleting: true,
+      });
+    }
+  }
+
+  setAborting() {
+    if (this.#mode === Mode.DEFAULT) {
+      this.#tripEventView.shake();
+      return;
+    }
+
+    const resetFormState = () => {
+      this.#eventEditView.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#eventEditView.shake(resetFormState);
+  }
 
   #switchToEditMode() {
     this.#handleEditStart();
@@ -97,4 +131,5 @@ export default class EventPresenter {
   #onDelete = () => {
     this.#onDataChange(UserAction.DELETE_EVENT, UpdateType.MINOR, {...this.#event});
   };
+  //
 }
